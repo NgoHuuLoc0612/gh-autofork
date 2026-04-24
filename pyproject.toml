@@ -50,9 +50,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage       = "https://github.com/yourorg/gh-autofork"
-Documentation  = "https://github.com/yourorg/gh-autofork#readme"
-"Bug Tracker"  = "https://github.com/yourorg/gh-autofork/issues"
+Homepage       = "https://github.com/NgoHuuLoc0612/gh-autofork"
+Documentation  = "https://github.com/NgoHuuLoc0612/gh-autofork#readme"
+"Bug Tracker"  = "https://github.com/NgoHuuLoc0612/gh-autofork/issues"
 
 [project.scripts]
 gh-autofork = "gh_autofork.cli:main"
