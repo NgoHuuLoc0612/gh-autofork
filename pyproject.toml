@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gh-autofork"
+version = "1.0.0"
+description = "Automatic GitHub repository batch-forker with SQLite caching and OS startup integration"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "gh-autofork contributors" }]
+requires-python = ">=3.10"
+keywords = ["github", "fork", "automation", "git", "devtools"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Version Control :: Git",
+    "Topic :: Utilities",
+]
+
+dependencies = [
+    "click",
+    "rich",
+    "requests",
+    "urllib3",
+    "PyYAML",
+    "croniter",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "responses",
+    "black",
+    "ruff",
+    "mypy",
+    "types-PyYAML",
+    "types-requests",
+]
+
+[project.urls]
+Homepage       = "https://github.com/yourorg/gh-autofork"
+Documentation  = "https://github.com/yourorg/gh-autofork#readme"
+"Bug Tracker"  = "https://github.com/yourorg/gh-autofork/issues"
+
+[project.scripts]
+gh-autofork = "gh_autofork.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gh_autofork*"]
+
+[tool.pytest.ini_options]
+testpaths    = ["tests"]
+addopts      = "-v --tb=short"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+strict         = false
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["gh_autofork"]
+omit   = ["*/tests/*"]
+
+[tool.coverage.report]
+show_missing = true

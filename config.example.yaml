@@ -1,0 +1,93 @@
+# ~/.config/gh-autofork/config.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+# gh-autofork configuration
+# Full reference: https://github.com/yourorg/gh-autofork
+#
+# Environment variable overrides:
+#   GH_AUTOFORK_GITHUB__TOKEN=ghp_xxx
+#   GH_AUTOFORK_BATCH__CONCURRENCY=8
+#   GH_AUTOFORK_DRY_RUN=true
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── GitHub API ────────────────────────────────────────────────────────────────
+github:
+  token: ""                   # Required. Or set GITHUB_TOKEN / GH_TOKEN env var.
+  api_url: "https://api.github.com"
+  default_org: ""             # Fork into this org instead of your own account.
+  per_page: 100               # Results per API page (max 100).
+  abuse_retry_delay: 60       # Seconds to wait on secondary rate-limit hits.
+
+# ── Batch forking ─────────────────────────────────────────────────────────────
+batch:
+  concurrency: 4              # Parallel fork workers.
+  fork_delay: 0.5             # Seconds between forks per worker.
+  max_attempts: 3             # Retry failed forks up to this many times.
+  retry_backoff_base: 2.0     # Exponential backoff base (seconds).
+  retry_backoff_max: 300.0    # Cap on backoff delay.
+
+# ── Filters (applied when discovering repos) ─────────────────────────────────
+filters:
+  min_stars: 10
+  max_stars: 0                # 0 = no limit
+  min_forks: 0
+  max_forks: 0
+  languages: []               # Whitelist. Empty = all languages.
+  exclude_languages: []       # Always skip these languages.
+  topics: []                  # Must match at least one. Empty = any.
+  exclude_topics: []          # Skip repos with these topics.
+  min_size_kb: 0
+  max_size_kb: 0
+  exclude_archived: true
+  exclude_forks: true
+  exclude_private: true
+  max_days_since_push: 365    # Skip repos not pushed to in this many days.
+  description_pattern: ""     # Regex. Empty = no filter.
+  name_pattern: ""            # Regex on repo name. Empty = no filter.
+
+# ── Fork sync ─────────────────────────────────────────────────────────────────
+sync:
+  enabled: true
+  strategy: "merge"           # merge | rebase
+  min_commits_behind: 1       # Skip sync if behind by fewer commits than this.
+
+# ── Scheduler (daemon mode) ───────────────────────────────────────────────────
+scheduler:
+  fork_cron: "0 3 * * *"     # 3 AM daily. Empty string = disabled.
+  sync_cron: "0 4 * * *"     # 4 AM daily. Empty string = disabled.
+  daemon: true                # Run as background daemon.
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+logging:
+  level: "INFO"               # DEBUG | INFO | WARNING | ERROR | CRITICAL
+  file: ""                    # Defaults to ~/.local/share/gh-autofork/autofork.log
+  max_bytes: 10485760         # 10 MB log rotation.
+  backup_count: 5
+  stderr: true
+
+# ── Database ──────────────────────────────────────────────────────────────────
+db_path: ""                   # Defaults to ~/.local/share/gh-autofork/autofork.db
+
+# ── Global dry-run ────────────────────────────────────────────────────────────
+dry_run: false                # true = simulate; no real API calls.
+
+# ── Repos to fork immediately when the daemon starts ─────────────────────────
+startup_repos:
+  # - torvalds/linux
+  # - microsoft/vscode
+
+# ── Users / orgs to watch (checked on each fork_cron cycle) ──────────────────
+watch_users:
+  # - torvalds
+  # - antirez
+
+watch_orgs:
+  # - microsoft
+  # - google
+
+# ── Saved search queries (executed on each fork_cron cycle) ──────────────────
+saved_searches:
+  # - "topic:machine-learning stars:>=500 language:python"
+  # - "topic:rust stars:>=200 pushed:>=2024-01-01"
+
+# ── Webhook notifications ─────────────────────────────────────────────────────
+webhook_url: ""               # POST JSON payload to this URL after each batch.
